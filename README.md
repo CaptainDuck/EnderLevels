@@ -4,7 +4,7 @@
 **[Twitter](https://twitter.com/dimay_johanna)**
 
 ## Quick Scroll
-[Compatible API Versions](#CompatibleAPIVersions)
+[Compatible API Versions](#Compatible-API-Versions)
 
 [Features](#features)
 
@@ -39,8 +39,8 @@
 ### To-do
 
 - **Configuration Files**
- - **[ ] Configurable Messages.**
- - **[ ] Configurabe experience when you break/place a block.**
+ - [] Configurable Messages.
+ - [ ] Configurabe experience when you break/place a block.
  
  ### Download
  
