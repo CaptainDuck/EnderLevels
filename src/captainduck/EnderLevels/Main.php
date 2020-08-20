@@ -36,9 +36,9 @@ class Main extends PluginBase implements Listener{
     public function onCommand(CommandSender $sender, Command $command, $label, array $args) : bool{
         switch (strtolower($command->getName())) {
             case "stats":
-            $sender->sendMessage(C::ITALIC. C::GRAY. "----------- ". C::WHITE. "Your Stats: ". C::GRAY. "-----------");
+            $sender->sendMessage(C::ITALIC. C::GRAY. "----------- ". C::GOLD. "Your Stats: ". C::GRAY. "-----------");
             $sender->sendMessage(C::ITALIC. "Level: ". $this->getLevel($sender). " ");
-            $sender->sendMessage(C::ITALIC. "Exp: ". $this->getExp($sender)."/".$this->getExpNeededTLU($sender). " ");
+            $sender->sendMessage(C::ITALIC. "XP: ". $this->getExp($sender)."/".$this->getExpNeededTLU($sender). " ");
             $sender->sendMessage(C::ITALIC. "Kills: ". $this->getKills($sender). " ");
             $sender->sendMessage(C::ITALIC. "Deaths: ". $this->getDeaths($sender). " ");
             $sender->sendMessage(C::ITALIC. C::GRAY. "---------------------------------");
@@ -62,19 +62,6 @@ class Main extends PluginBase implements Listener{
                 break;
             }
 
-            case "enchantshop":
-            if($this->getLevel($sender) >= 20){
-                $sender->teleport($sender->getServer()->getLevelByName("EnchantShop")->getSpawnLocation());
-                $sender->sendMessage(C::ITALIC. "Teleported to the Enchant Shop!");
-                return true;
-            }else{
-                $sender->sendMessage(C::ITALIC. C::RED. "You must be at least level 20 to go to the Enchant Shop!");
-                break;
-            }
-        }
-        return true;
-    }
-
     ###########################################################################
     ########################### IMPORTANT API #################################
     ###########################################################################
@@ -82,8 +69,8 @@ class Main extends PluginBase implements Listener{
     public function initializeLevel($player){
         $exp = $this->getExp($player);
         $expn = $this->getExpNeededTLU($player);
-        if($this->getLevel($player) == 30){
-            $player->sendMessage(C::ITALIC. C::RED. "You have already reached the max level, silly!");
+        if($this->getLevel($player) == 100){
+            $player->sendMessage(C::ITALIC. C::RED. "You have already reached the max level!");
         }
         if($exp >= $expn){
             $this->levelUp($player);
@@ -104,7 +91,7 @@ class Main extends PluginBase implements Listener{
     }
 
     public function setNamedTag($player){
-        $player->setDisplayName(C::ITALIC. C::DARK_GRAY. "[". C::GREEN. "Lvl". C::WHITE. "" . $this->getLevel($player) . C::DARK_GRAY. "] ". C::WHITE . $player->getName());
+        $player->setDisplayName(C::GREEN. $this->getLevel($player) . C::WHITE. $player->getName());
         $player->save();
     }
 
