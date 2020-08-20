@@ -19,5 +19,5 @@ commands:
  levelup:
   description: Level up with your current experience!
   default: true
-  aliases: [lu, levup, level, up]
+  aliases: [levup, level]
 ...
