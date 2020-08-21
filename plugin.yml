@@ -10,11 +10,11 @@ commands:
   default: true
  addexp:
   description: Add experience to a player!
-  usage: /addexp <player> <exp>
+  usage: /addxp <player> <xp>
   default: op
  reduceexp:
   description: Reduce a player's experience!
-  usage: /reduceexp <player> <exp>
+  usage: /reducexp <player> <xp>
   default: op
  levelup:
   description: Level up with your current experience!
