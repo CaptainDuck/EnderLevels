@@ -36,9 +36,9 @@ class Main extends PluginBase implements Listener{
     public function onCommand(CommandSender $sender, Command $command, $label, array $args) : bool{
         switch (strtolower($command->getName())) {
             case "stats":
-            $sender->sendMessage(C::ITALIC. C::GRAY. "----------- ". C::GOLD. "Your Stats: ". C::GRAY. "-----------");
+            $sender->sendMessage(C::ITALIC. C::GRAY. "------------". C::GOLD. "Your Statistics". C::GRAY. "-----------");
             $sender->sendMessage(C::ITALIC. "Level: ". $this->getLevel($sender). " ");
-            $sender->sendMessage(C::ITALIC. "XP: ". $this->getExp($sender)."/".$this->getExpNeededTLU($sender). " ");
+            $sender->sendMessage(C::ITALIC. "XP: ". $this->getxp($sender)."/".$this->getxpNeededTLU($sender). " ");
             $sender->sendMessage(C::ITALIC. "Kills: ". $this->getKills($sender). " ");
             $sender->sendMessage(C::ITALIC. "Deaths: ". $this->getDeaths($sender). " ");
             $sender->sendMessage(C::ITALIC. C::GRAY. "---------------------------------");
@@ -48,16 +48,16 @@ class Main extends PluginBase implements Listener{
             $this->initializeLevel($sender);
             break;
 
-            case "addexp":
+            case "addxp":
             if(isset($args[0]) && isset($args[1]) && is_numeric($args[1])){
-                $this->addExp($args[0], $args[1]);
+                $this->addxp($args[0], $args[1]);
                 return true;
                 break;
             }
 
-            case "reduceexp":
+            case "reducexp":
             if(isset($args[0]) && is_numeric($args[0]) && isset($args[1])){
-                $this->reduceExp($args[0], $args[1]);
+                $this->reducexp($args[0], $args[1]);
                 return true;
                 break;
             }
@@ -67,16 +67,16 @@ class Main extends PluginBase implements Listener{
     ###########################################################################
 
     public function initializeLevel($player){
-        $exp = $this->getExp($player);
-        $expn = $this->getExpNeededTLU($player);
+        $exp = $this->getxp($player);
+        $expn = $this->getxpNeededTLU($player);
         if($this->getLevel($player) == 100){
-            $player->sendMessage(C::ITALIC. C::RED. "You have already reached the max level!");
+            $player->sendMessage(C::ITALIC. C::RED. "You have already reached the maximum level!");
         }
-        if($exp >= $expn){
+        if($xp >= $xpn){
             $this->levelUp($player);
-            $this->reduceExp($player, $expn);
+            $this->reducexp($player, $xpn);
             $this->setNamedTag($player);
-            $this->addExpNeededTLU($player, $expn * 1);
+            $this->addExpNeededTLU($player, $xpn * 1);
             $player->sendMessage(C::ITALIC. "Successfully leveled up to ". $this->getLevel($player). "!");
         }else{
             $player->sendMessage(C::ITALIC. C::RED. "You don't have enough experience to level up!");
@@ -87,7 +87,7 @@ class Main extends PluginBase implements Listener{
         $this->stats->setNested(strtolower($player->getName()).".lvl", $this->stats->getAll()[strtolower($player->getName())]["lvl"] + 1);
         $this->stats->save();
         $this->setNamedTag($player);
-        $this->getServer()->broadcastMessage(C::ITALIC. $player->getName(). " is now level ". $this->getLevel($player). "!");
+        $this->getServer()->broadcastMessage(C::BOLD. C::GREEN. $player->getName(). " is now level ". $this->getLevel($player). "!");
     }
 
     public function setNamedTag($player){
@@ -95,8 +95,8 @@ class Main extends PluginBase implements Listener{
         $player->save();
     }
 
-    public function reduceExp($player, $exp){
-        $this->stats->setNested(strtolower($player->getName()).".exp", $this->stats->getAll()[strtolower($player->getName())]["exp"] - $exp);
+    public function reducexp($player, $xp){
+        $this->stats->setNested(strtolower($player->getName()).".xp", $this->stats->getAll()[strtolower($player->getName())]["xp"] - $xp);
         $this->stats->save();
     }
 
@@ -106,8 +106,8 @@ class Main extends PluginBase implements Listener{
 
     public function addPlayer($player){
         $this->stats->setNested(strtolower($player->getName()).".lvl", "1");
-        $this->stats->setNested(strtolower($player->getName()).".exp", "0");
-        $this->stats->setNested(strtolower($player->getName()).".expneededtlu", "250");
+        $this->stats->setNested(strtolower($player->getName()).".xp", "0");
+        $this->stats->setNested(strtolower($player->getName()).".xpneededtlu", "250");
         $this->stats->setNested(strtolower($player->getName()).".kills", "0");
         $this->stats->setNested(strtolower($player->getName()).".deaths", "0");
         $this->stats->save();
@@ -123,13 +123,13 @@ class Main extends PluginBase implements Listener{
          $this->stats->save();
     }
 
-    public function addExp($player, $exp){
-        $this->stats->setNested(strtolower($player).".exp", $this->stats->getAll()[strtolower($player)]["exp"] + $exp);
+    public function addxp($player, $xp){
+        $this->stats->setNested(strtolower($player).".xp", $this->stats->getAll()[strtolower($player)]["xp"] + $xp);
         $this->stats->save();
     }
 
-    public function addExpNeededTLU($player, $exp){
-        $this->stats->setNested(strtolower($player->getName()).".expneededtlu", $this->stats->getAll()[strtolower($player->getName())]["expneededtlu"] + $exp);
+    public function addxpNeededTLU($player, $xp){
+        $this->stats->setNested(strtolower($player->getName()).".xpneededtlu", $this->stats->getAll()[strtolower($player->getName())]["xpneededtlu"] + $xp);
         $this->stats->save();
     }
 
@@ -143,14 +143,14 @@ class Main extends PluginBase implements Listener{
     public function getKills($player){
         return $this->stats->getAll()[strtolower($player->getName())]["kills"];
     }
-    public function getExp($player){
-        return $this->stats->getAll()[strtolower($player->getName())]["exp"];
+    public function getxp($player){
+        return $this->stats->getAll()[strtolower($player->getName())]["xp"];
     }
     public function getLevel($player){
         return $this->stats->getAll()[strtolower($player->getName())]["lvl"];
     }
-    public function getExpNeededTLU($player){
-        return $this->stats->getAll()[strtolower($player->getName())]["expneededtlu"];
+    public function getxpNeededTLU($player){
+        return $this->stats->getAll()[strtolower($player->getName())]["xpneededtlu"];
     }
 
     ###########################################################################
@@ -175,13 +175,13 @@ class Main extends PluginBase implements Listener{
         }
     }
 
-    public function addExpBreak(BlockBreakEvent $e){
+    public function addxpBreak(BlockBreakEvent $e){
         $pn = $e->getPlayer()->getName();
-        $this->addExp($pn, 5);
+        $this->addxp($pn, 5);
     }
 
-    public function addExpPlace(BlockPlaceEvent $e){
+    public function addxpPlace(BlockPlaceEvent $e){
         $pn = $e->getPlayer()->getName();
-        $this->addExp($pn, 5);
+        $this->addxp($pn, 5);
     }
 }
