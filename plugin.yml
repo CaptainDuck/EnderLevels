@@ -3,7 +3,7 @@ name: EnderLevels
 author: CaptainDuck
 main: captainduck\EnderLevels\Main
 version: 1.0.0
-api: [3.0.0-ALPHA10, 3.0.0-ALPHA11, 3.0.0-ALPHA12]
+api: 3.0.0
 commands:
  stats:
   description: Shows your current stats!
